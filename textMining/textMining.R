@@ -2,10 +2,11 @@ rm(list=ls(all=TRUE))
 # install.packages("jiebaR")
 # install.packages("tm")
 # install.packages("slam")
-#install.packages("RColorBrewer")
+# install.packages("RColorBrewer")
 # install.packages("wordcloud")
 # install.packages("topicmodels")
 # install.packages("igraph")
+# install.packages("xml2")
 
 library(jiebaRD)
 library(jiebaR)       # 斷詞利器
@@ -15,11 +16,13 @@ library(slam)         # 稀疏矩陣運算
 library(RColorBrewer)
 library(wordcloud)    # 文字雲
 library(topicmodels)  # 主題模型
+library(plyr)
+
 source('chosePage.R')
 
 #Sys.setlocale("LC_ALL", "cht")
 
-result = chosePage(1,1)
+result = chosePage(1,2)
 
 orgPath = "./temp"
 text = Corpus(DirSource(orgPath), list(language = NA))
@@ -30,9 +33,9 @@ text <- tm_map(text, function(word)
 
 # 進行中文斷詞
 mixseg = worker()
-mat <- matrix( unlist(text), nrow=length(text) )
+mat <- matrix( unlist(text) )
 totalSegment = data.frame()
-for( j in 1:length(text) )
+for( j in 1:length(mat) )
 {
   for( i in 1:length(mat[j,]) )
   {
@@ -41,22 +44,11 @@ for( j in 1:length(text) )
   totalSegment = rbind(totalSegment, data.frame(result))
 }
 
-totaldiff = levels(totalSegment$result)
-countMat = data.frame(totaldiff, c(rep(0, length(totaldiff))))
-for( i in 1:length(totalSegment$result) )
-{
-  for( j in 1:length(totaldiff) )
-  {
-    if( nchar(totaldiff[j]) >= 2 &&
-        totaldiff[j] == as.character(totalSegment$result[i]) )
-    {
-      countMat[j,2] = countMat[j,2] + 1
-    }
-  }
-}
-
-names(countMat) = c("totaldiff", "freq")
-countMat[,2] = countMat[,2] / sum(countMat[,2])
-
-wordcloud(countMat$totaldiff, countMat$freq, min.freq = 1, random.order = F, ordered.colors = T, 
-          colors = rainbow(length(totaldiff)))
+# define text array that you want
+# delete text length < 2
+delidx = which( nchar(as.vector(totalSegment[,1])) < 2 )
+countText = totalSegment[-delidx,]
+countResult = count(countText)[,1]
+countFreq = count(countText)[,2] / sum(count(countText)[,2])
+wordcloud(countResult, countFreq, min.freq = 1, random.order = F, ordered.colors = T, 
+          colors = rainbow(length(countResult)))
