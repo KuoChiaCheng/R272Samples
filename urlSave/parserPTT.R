@@ -29,9 +29,4 @@ for( i in startPage:endPage)
   alldata = rbind(alldata, tempdata)
 }
 
-allDate = levels(alldata$date)
-res = hist(as.numeric(alldata$date), nclass=length(allDate), axes=F) 
-axis(1, at=1:length(allDate), labels=allDate)
-axis(2, at=1:max(res$counts), labels=1:max(res$counts))
-
 write.csv(alldata,"alldata.csv")

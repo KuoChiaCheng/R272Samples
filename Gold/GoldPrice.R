@@ -43,4 +43,4 @@ for (y in tempY)
   }
 }
 
-write.csv(alldata,"goldPrice.csv")
+write.csv(alldata,"GOLD.csv")
