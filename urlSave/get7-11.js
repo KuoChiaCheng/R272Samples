@@ -9,24 +9,38 @@ var fs = require("fs");
 
 //http://www.ibon.com.tw/js/commonutil.js
 
-var pm25 = function() {
-  request({
-    url: "http://www.ibon.com.tw/retail_inquiry.aspx#gsc.tab=0",
-    method: "POST"
-  }, function(error, response, body) {
-    if (error || !body) {
-      return;
-    }
-    var $ = cheerio.load(body);
-    var result = [];
-    var titles = $("#InquiryResule");
-    var location;
-    for (var i = 0; i < titles.length; i++) {
-      result.push(titles);
-    }
-    fs.writeFile("result.json", result);
-  });
-};
+// Configure the request
+var options = {
+  url: 'http://www.ibon.com.tw/retail_inquiry_ajax.aspx',
+  method: 'POST',
+  form: {
+    'strTargetField': 'COUNTY',
+    'strKeyWords': ''
+  }
+}
 
-pm25();
-setInterval(pm25,30*60*1000);
+// Start the request
+
+request(options, function(error, response, body) {
+  if (!error && response.statusCode == 200) {
+    // Print out the response body
+ 
+    var fs = require("fs");
+    var path = "./address.html";//file output path
+    var options = {
+      encoding: "utf8"
+    };
+
+    fs.writeFile(path, "\ufeff" + body, options, function(error) {
+      if (error) {
+        console.error("write error:  " + error.message);
+      } else {
+        console.log("Successful Write to " + path);
+      }
+    });
+
+  }else{
+   			console.log("error:"+ error +" response.statusCode: " + response.statusCode);
+  }
+
+})
