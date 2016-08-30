@@ -8,8 +8,19 @@
 library(shiny)
 source('./TestAndRegression/ReFit.R')
 source('./SVM/TestSVM.R')
+source('./SVM/houseSVM.R')
 
 shinyUI(navbarPage("GOLD and FX",
+                   tabPanel("house price by SVM",
+                             sidebarLayout(
+                               sidebarPanel(
+                                 selectInput("SVMPrems", label = h2("garmma set"),
+                                             choices = list("0.1"=0.1, "0.5"=0.5, "0.9"=0.9))),
+                                 mainPanel(
+                                   plotOutput("svmResultHOUSE")
+                                 )
+                             )),
+                   
                    tabPanel("Regression and Test",
                             sidebarLayout(
                               sidebarPanel(
@@ -33,6 +44,7 @@ shinyUI(navbarPage("GOLD and FX",
                    ),
                    tabPanel("SVM",
                             mainPanel(
+                              #plotOutput("svmResultHOUSE")
                               dataTableOutput("svmResult")
                             ))
 ))

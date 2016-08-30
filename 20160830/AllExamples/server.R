@@ -8,6 +8,7 @@
 library(shiny)
 source('./TestAndRegression/ReFit.R')
 source('./SVM/TestSVM.R')
+source('./SVM/houseSVM.R')
 
 shinyServer(function(input, output, session) {
 
@@ -70,4 +71,15 @@ shinyServer(function(input, output, session) {
     outTable
   })
 
+  output$svmResultHOUSE <- renderPlot({
+    getGarmma = as.numeric(input$SVMPrems)
+    #getGarmma = 0.9
+    svm.model = svm( label ~ ., TrainData, kernal='radial', type = 'eps-regression', cost = 1, gamma = getGarmma, degree = 1, epsilon = 0.001)
+    svm.pred = predict(svm.model, TestData)
+    
+    plot(TestData$label, col="red")
+    par(new=TRUE)
+    plot(svm.pred, col="blue")
+    #RMSE = mean( abs(TestData$label - svm.pred) / TestData$label )
+  })
 })
