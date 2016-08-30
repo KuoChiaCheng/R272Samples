@@ -95,7 +95,9 @@ shinyServer(function(input, output, session) {
     nameList = c("County", "Type", "Year", "Bed", "Living")
     getHouseType = as.numeric(input$houseType)
     print(getHouseType)
+    X[,3] = floor(X[,3] / 10)
     subX = X[,getHouseType]
+    Y = log(Y)
     subData = data.frame(Y, subX)
     names(subData) = c("label", nameList[getHouseType])
     testResult = summary(lm(label ~ ., data = subData ))
