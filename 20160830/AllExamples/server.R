@@ -12,6 +12,14 @@ source('./SVM/houseSVM.R')
 
 shinyServer(function(input, output, session) {
 
+  selAllhouse <- observeEvent(input$SelectAllhouse, {
+    updateCheckboxGroupInput(session, "houseType", selected = as.character(c(1:5)))
+  })
+  
+  delAllhouse <- observeEvent(input$DelAllhouse, {
+    updateCheckboxGroupInput(session, "houseType", selected = c(""))
+  })
+  
   selAll <- observeEvent(input$SelectAll, {
     updateCheckboxGroupInput(session,"Type", selected=as.character(c(2:5)))
   })
@@ -60,7 +68,7 @@ shinyServer(function(input, output, session) {
         fxselect = as.numeric(input$selectFX)
     subpriceFX <- data.frame(price$GOLD, price[,fxselect])
     names(subpriceFX) = c("GOLD", "FX")
-    testResult = summary(lm(GOLD ~ FX, data = subpriceFX ))
+    testResult = summary(lm(GOLD ~ ., data = subpriceFX ))
     showName = rbind("Intercept", typeName[fxselect])
     data.frame(showName, testResult$coefficients)
   })
@@ -81,5 +89,16 @@ shinyServer(function(input, output, session) {
     par(new=TRUE)
     plot(svm.pred, col="blue")
     #RMSE = mean( abs(TestData$label - svm.pred) / TestData$label )
+  })
+  
+  output$houseRegression <- renderDataTable({
+    nameList = c("County", "Type", "Year", "Bed", "Living")
+    getHouseType = as.numeric(input$houseType)
+    print(getHouseType)
+    subX = X[,getHouseType]
+    subData = data.frame(Y, subX)
+    names(subData) = c("label", nameList[getHouseType])
+    testResult = summary(lm(label ~ ., data = subData ))
+    print(testResult$coefficients)
   })
 })

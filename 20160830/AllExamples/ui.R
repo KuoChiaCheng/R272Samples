@@ -11,6 +11,22 @@ source('./SVM/TestSVM.R')
 source('./SVM/houseSVM.R')
 
 shinyUI(navbarPage("GOLD and FX",
+                   tabPanel("house price regression",
+                            sidebarLayout(
+                              sidebarPanel(
+                                checkboxGroupInput("houseType", label=h2("House Prices and Data"),
+                                                   choices=list("County"=1,
+                                                                "Type"=2,
+                                                                "Year"=3,
+                                                                "Bed"=4,
+                                                                "Living"=5),
+                                                   selected = 1),
+                                actionButton("SelectAllhouse", label = "SelectAll"),
+                                actionButton("DelAllhouse", label = "DelAll")),
+                              mainPanel(
+                                dataTableOutput("houseRegression"))
+                            )),
+                   
                    tabPanel("house price by SVM",
                              sidebarLayout(
                                sidebarPanel(
@@ -20,7 +36,6 @@ shinyUI(navbarPage("GOLD and FX",
                                    plotOutput("svmResultHOUSE")
                                  )
                              )),
-                   
                    tabPanel("Regression and Test",
                             sidebarLayout(
                               sidebarPanel(
