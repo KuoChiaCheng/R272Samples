@@ -9,6 +9,7 @@ library(shiny)
 source('./TestAndRegression/ReFit.R')
 source('./SVM/TestSVM.R')
 source('./SVM/houseSVM.R')
+source('./wordcloud/textMining.R')
 
 shinyServer(function(input, output, session) {
 
@@ -103,4 +104,9 @@ shinyServer(function(input, output, session) {
     testResult = summary(lm(label ~ ., data = subData ))
     print(testResult$coefficients)
   })
+  
+  output$wordCloud <- renderPlot({
+    wordcloud(countResult, countFreq, min.freq = 1, random.order = F, ordered.colors = T, 
+              colors = rainbow(length(countResult)))
+    })
 })

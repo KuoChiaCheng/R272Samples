@@ -60,6 +60,7 @@ shinyUI(navbarPage("GOLD and FX",
                    tabPanel("SVM",
                             mainPanel(
                               #plotOutput("svmResultHOUSE")
-                              dataTableOutput("svmResult")
+                              dataTableOutput("svmResult"),
+                              plotOutput("wordCloud")
                             ))
 ))
