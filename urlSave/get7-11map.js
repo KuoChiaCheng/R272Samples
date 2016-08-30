@@ -20,7 +20,7 @@ var options = {
   method: 'POST',
   form: {
     //'commandid': 'GetTown', 'cityid': '01'
-    'commandid': 'Search0007', 'x1': '119925572', 'y1': '26156777', 'x2': '121146825', 'y2': '24752216'
+    'commandid': 'Search0007', 'x1': '121517166', 'y1': '25048055', 'x2': '121768104', 'y2': '25151627'
     //'commandid': 'UpdatePosition', 'storeid': '131593', 'x': '121548322.390798', 'y': '25052738.9557778'
   }
 }
