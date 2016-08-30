@@ -12,7 +12,7 @@ source('./SVM/houseSVM.R')
 source('./wordcloud/textMining.R')
 
 shinyServer(function(input, output, session) {
-
+  
   selAllhouse <- observeEvent(input$SelectAllhouse, {
     updateCheckboxGroupInput(session, "houseType", selected = as.character(c(1:5)))
   })
@@ -43,8 +43,8 @@ shinyServer(function(input, output, session) {
       mdf <- melt(subPrice, id.vars="date", value.name="Price", variable.name="FX")
       
       ggplot(data=mdf, aes(x=date, y=Price, group=FX, colour=FX)) +
-      geom_line() +
-      geom_point( size=1, shape=1, fill="white" )
+        geom_line() +
+        geom_point( size=1, shape=1, fill="white" )
     }
   })
   
@@ -66,7 +66,7 @@ shinyServer(function(input, output, session) {
   
   output$fxTest <- renderDataTable({
     typeName = c("date", "EUR", "GBP", "USD", "GOLD")
-        fxselect = as.numeric(input$selectFX)
+    fxselect = as.numeric(input$selectFX)
     subpriceFX <- data.frame(price$GOLD, price[,fxselect])
     names(subpriceFX) = c("GOLD", "FX")
     testResult = summary(lm(GOLD ~ ., data = subpriceFX ))
@@ -79,7 +79,7 @@ shinyServer(function(input, output, session) {
     names(outTable) = c("pred", "org", "freq")
     outTable
   })
-
+  
   output$svmResultHOUSE <- renderPlot({
     getGarmma = as.numeric(input$SVMPrems)
     #getGarmma = 0.9
@@ -108,5 +108,5 @@ shinyServer(function(input, output, session) {
   output$wordCloud <- renderPlot({
     wordcloud(countResult, countFreq, min.freq = 1, random.order = F, ordered.colors = T, 
               colors = rainbow(length(countResult)))
-    })
+  })
 })

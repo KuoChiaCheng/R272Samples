@@ -6,10 +6,10 @@ library(TTR)
 library(quantmod)
 library(fArma)
 
-getSymbols("GLD", from='2016-01-04', to='2016-08-10')
-getFX("EUR/TWD", from='2016-01-04', to='2016-08-10')
-getFX("GBP/TWD", from='2016-01-04', to='2016-08-10')
-getFX("USD/TWD", from='2016-01-04', to='2016-08-10')
+getSymbols("GLD", from='2015-01-04', to='2015-12-10')
+getFX("EUR/TWD", from='2015-01-04', to='2015-12-10')
+getFX("GBP/TWD", from='2015-01-04', to='2015-12-10')
+getFX("USD/TWD", from='2015-01-04', to='2015-12-10')
 
 fxid = index(EURTWD)
 goldid = index(GLD)
@@ -32,12 +32,6 @@ for(i in 1:length(fxid))
 price=data.frame(goldid, EURTWD[undelid,], GBPTWD[undelid,], USDTWD[undelid,], GLD[,4])
 price[,2:5] = log(price[,2:5])
 names(price) = c("date", "EUR", "GBP", "USD", "GOLD")
-
-EURDiff = diff( price$EUR )
-EURDiff = as.ts( tail( EURDiff ) )
-fit = armaFit( formula=~arma(2,2), data=EURDiff)
-fit@fit$aic
-as.numeric( predict( fit, n.ahead=1, doplot=F )$pred )
 
 # regression y = b1 x1 + b2 x2 + b3 x3
 train = 1:100
