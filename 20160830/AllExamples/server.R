@@ -6,10 +6,12 @@
 #
 
 library(shiny)
+library(jpeg)
+
 source('./TestAndRegression/ReFit.R')
 source('./SVM/TestSVM.R')
 source('./SVM/houseSVM.R')
-source('./wordcloud/textMining.R')
+#source('./wordcloud/textMining.R')
 
 shinyServer(function(input, output, session) {
   
@@ -105,8 +107,16 @@ shinyServer(function(input, output, session) {
     print(testResult$coefficients)
   })
   
-  output$wordCloud <- renderPlot({
-    wordcloud(countResult, countFreq, min.freq = 1, random.order = F, ordered.colors = T, 
-              colors = rainbow(length(countResult)))
-  })
+  output$wordCloud <- renderImage({
+    return(list(
+        src = "./wordcloud/Rplot.jpg",
+        filetype = "image/jpeg",
+        alt = "This is a chainring"
+      ))
+    })
+  
+  #output$wordCloud <- renderPlot({
+    #wordcloud(countResult, countFreq, min.freq = 1, random.order = F, ordered.colors = T, 
+    #          colors = rainbow(length(countResult)))
+  #})
 })

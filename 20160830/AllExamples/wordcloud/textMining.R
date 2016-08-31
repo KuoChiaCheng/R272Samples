@@ -46,3 +46,4 @@ countText = totalSegment[-delidx,]
 countResult = count(countText)[,1]
 countFreq = count(countText)[,2] / sum(count(countText)[,2])
 
+

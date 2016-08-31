@@ -9,7 +9,7 @@ library(shiny)
 source('./TestAndRegression/ReFit.R')
 source('./SVM/TestSVM.R')
 source('./SVM/houseSVM.R')
-source('./wordcloud/textMining.R')
+#source('./wordcloud/textMining.R')
 
 shinyUI(navbarPage("GOLD and FX",
                    tabPanel("house price regression",
@@ -62,6 +62,7 @@ shinyUI(navbarPage("GOLD and FX",
                             mainPanel(
                               #plotOutput("svmResultHOUSE")
                               dataTableOutput("svmResult"),
-                              plotOutput("wordCloud")
+                              #plotOutput("wordCloud")
+                              imageOutput("wordCloud")
                             ))
 ))
